@@ -33,7 +33,7 @@ Partial Class Form1
         '
         'NewGameButton
         '
-        Me.NewGameButton.Location = New System.Drawing.Point(41, 49)
+        Me.NewGameButton.Location = New System.Drawing.Point(147, 77)
         Me.NewGameButton.Name = "NewGameButton"
         Me.NewGameButton.Size = New System.Drawing.Size(70, 264)
         Me.NewGameButton.TabIndex = 0

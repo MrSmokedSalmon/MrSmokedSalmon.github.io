@@ -11,7 +11,7 @@ End Module
 Public Class Form1
     'Monday 3/5/21
     Public midGame = False
-    Public reset = False
+    Public Button As ResetButton = New ResetButton
 
     Public Board()() As Box = {
         New Box(2) {New Box, New Box, New Box},
@@ -25,13 +25,24 @@ Public Class Form1
     End Sub
 
     Public Sub SetBoard()
+        Controls.Clear()
+
         Dim y = 1
+        '22/05/21
+        With Button
+            .Size = New Size(70, 264)
+            .Location = New Point(37, 93)
+            .Text = "Reset Board"
+        End With
+        Controls.Add(Button)
+
         For Each i In Board
             Dim x = 1
             For Each k In i
                 With k
                     .Size = New Size(112, 112)
                     .Location = New Point(107 + (118 * x), -80 + (118 * y))
+                    .Image = WinFormsApp1.My.Resources.Blank
                 End With
                 Controls.Add(k)
                 x += 1
@@ -40,28 +51,32 @@ Public Class Form1
         Next
     End Sub
 
-    'Wednesday 5/5/21
-    Private Sub NewGameButton_Click(sender As Object, e As EventArgs) Handles NewGameButton.Click
-        If (midGame = True) Then
+    '22/05/21
+    Public Sub Reset()
+        For Each i In Board
+            For Each k In i
+                k.Tag = ""
+                k.Image = WinFormsApp1.My.Resources.Blank
+            Next
+        Next
+        Box.Tem = False
+        midGame = False
+    End Sub
+
+End Class
+
+Public Class ResetButton
+    Inherits Button
+
+    '22/05/21
+    Public Sub Button1_Click(sender As Object, e As EventArgs) Handles Me.Click
+        If (Form1.midGame = True) Then
             If (MsgBox("Are you sure you want to start a new game?", 4, "Are you sure?") = 6) Then
-                For Each i In Board
-                    For Each k In i
-                        k.Tag = ""
-                        k.Image = WinFormsApp1.My.Resources.Blank
-                    Next
-                Next
-                Box.Tem = False
+                Form1.Reset()
             End If
         Else
-            For Each i In Board
-                For Each k In i
-                    k.Tag = ""
-                    k.Image = WinFormsApp1.My.Resources.Blank
-                Next
-            Next
-            Box.Tem = False
+            Form1.Reset()
         End If
-        midGame = False
     End Sub
 End Class
 
@@ -72,7 +87,7 @@ Public Class Box
     Public Shared Tem As Boolean
 
     Public Sub Button1_Click(sender As Object, e As EventArgs) Handles Me.Click
-        If (Me.Text = "") Then
+        If (Me.Tag = "") Then
             Form1.midGame = True
             If Tem Then
                 Me.Tag = "O"
@@ -83,13 +98,23 @@ Public Class Box
                 Me.Image = WinFormsApp1.My.Resources.X
             End If
             If CheckWin() = True Then
+                EndGame(Form1.Board)
                 MsgBox("WIN")
                 Form1.midGame = False
             End If
         End If
     End Sub
+
+    Public Shared Sub EndGame(k As Box()())
+        For Each i In k
+            For Each n In i
+                n.Tag = "."
+            Next
+        Next
+    End Sub
+
     'Wednesday 5/5/21
-    Public Function CheckWin()
+    Public Shared Function CheckWin()
         'Checks for any winstate of the middle Tile
         Dim y = 0
         For Each i In Form1.Board
@@ -144,7 +169,7 @@ Public Class Box
 End Class
 
 Public Class AI
-    Public Sub AnalyseBoard()
+    Public Shared Sub AnalyseBoard()
         Dim y = 0
         For Each i In Form1.Board
             Dim x = 0
