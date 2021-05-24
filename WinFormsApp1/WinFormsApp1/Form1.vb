@@ -49,6 +49,7 @@ Public Class Form1
             Next
             y += 1
         Next
+
     End Sub
 
     '22/05/21
@@ -62,7 +63,6 @@ Public Class Form1
         Box.Tem = False
         midGame = False
     End Sub
-
 End Class
 
 Public Class ResetButton
@@ -87,6 +87,9 @@ Public Class Box
     Public Shared Tem As Boolean
 
     Public Sub Button1_Click(sender As Object, e As EventArgs) Handles Me.Click
+        'Base for allowing more user customisation
+        'Dim sp = "D:\School\Software Design and Development\Major Project\MrSmokedSalmon.github.io\WinFormsApp1\WinFormsApp1\Images and Stuff\X.png"
+
         If (Me.Tag = "") Then
             Form1.midGame = True
             If Tem Then
@@ -96,11 +99,11 @@ Public Class Box
             Else Tem = True
                 Me.Tag = "X"
                 Me.Image = WinFormsApp1.My.Resources.X
-            End If
-            If CheckWin() = True Then
-                EndGame(Form1.Board)
-                MsgBox("WIN")
-                Form1.midGame = False
+                If CheckWin() = True Then
+                    EndGame(Form1.Board)
+                    MsgBox("WIN sdhjabdjh")
+                    Form1.midGame = False
+                End If
             End If
         End If
     End Sub
@@ -144,6 +147,8 @@ Public Class Box
             y += 1
         Next
 
+        'Beefy code that is hard to read
+        'Would want to make this into a function or a sub routine
         If Form1.Board(0)(0).Tag = "X" Or Form1.Board(0)(0).Tag = "O" Then
             If ((Form1.Board(0)(0).Tag = Form1.Board(0)(1).Tag) And Form1.Board(0)(2).Tag = Form1.Board(0)(1).Tag) Then
                 Return True
@@ -166,36 +171,4 @@ Public Class Box
         End If
         Return False
     End Function
-End Class
-
-Public Class AI
-    Public Shared Sub AnalyseBoard()
-        Dim y = 0
-        For Each i In Form1.Board
-            Dim x = 0
-            For Each k In i
-                If (x = 1 And y = 1) Then
-                    Dim l = -1
-                    While l <= 1
-                        If (k.Tag = "X" Or k.Tag = "O") Then
-                            'checks the winstates of the middle tile
-                            If (Form1.Board(0)(l + 1).Tag = k.Tag And Form1.Board(2)((l * -1) + 1).Tag = k.Tag) Then
-                                MsgBox("WIN")
-                                Exit Sub
-                            End If
-                        End If
-                        l += 1
-                    End While
-                    If (k.Tag = "X" Or k.Tag = "O") Then
-                        If (Form1.Board(1)(0).Tag = k.Tag And Form1.Board(1)(2).Tag = k.Tag) Then
-                            MsgBox("WIN")
-                            Exit Sub
-                        End If
-                    End If
-                End If
-                x += 1
-            Next
-            y += 1
-        Next
-    End Sub
 End Class
