@@ -7,6 +7,14 @@
     <StartupObject>WinFormsApp1.Form1</StartupObject>
     <UseWindowsForms>true</UseWindowsForms>
     <MyType>WindowsForms</MyType>
+    <PackageId>Naughts and Crosses</PackageId>
+    <Company>SmokedSalmonCode</Company>
+    <Authors>SmokedSalmon(AsherCarey)</Authors>
+    <Product>Naughts and Crosses</Product>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>Builds\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

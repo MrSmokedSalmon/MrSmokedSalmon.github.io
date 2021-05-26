@@ -6,13 +6,38 @@ Public Module MyExtensions
         Array.Resize(arr, arr.Length + 1)
         arr(arr.Length - 1) = item
     End Sub
+
+    <Extension()>
+    Function RemoveAt(Of T)(ByVal arr As T(), ByVal index As Integer) As T()
+        Dim uBound = arr.GetUpperBound(0)
+        Dim lBound = arr.GetLowerBound(0)
+        Dim arrLen = uBound - lBound
+
+        If index < lBound OrElse index > uBound Then
+            Throw New ArgumentOutOfRangeException(
+            String.Format("Index must be from {0} to {1}.", lBound, uBound))
+
+        Else
+            'create an array 1 element less than the input array
+            Dim outArr(arrLen - 1) As T
+            'copy the first part of the input array
+            Array.Copy(arr, 0, outArr, 0, index)
+            'then copy the second part of the input array
+            Array.Copy(arr, index + 1, outArr, index, uBound - index)
+
+            Return outArr
+        End If
+    End Function
 End Module
 
 Public Class Form1
-    'Monday 3/5/21
     Public midGame = False
-    Public Button As ResetButton = New ResetButton
 
+    Public path As String = (My.Application.Info.DirectoryPath).Replace("Builds\net5.0-windows", "")
+
+    'Declaring Objects
+    Public Button As ResetButton = New ResetButton
+    '2D Jagged array that acts as the board
     Public Board()() As Box = {
         New Box(2) {New Box, New Box, New Box},
         New Box(2) {New Box, New Box, New Box},
@@ -22,10 +47,11 @@ Public Class Form1
     'Monday 3/5/21
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         SetBoard()
+        'ToolStrip1.Items.Add(New CustomDropDownItem)
     End Sub
 
     Public Sub SetBoard()
-        Controls.Clear()
+        'Controls.Clear()
 
         Dim y = 1
         '22/05/21
@@ -64,6 +90,14 @@ Public Class Form1
         midGame = False
     End Sub
 End Class
+'
+'Public Class CustomDropDownItem
+'    Inherits ToolStripButton
+
+'    Public Sub LoadForm() Handles Me.Click
+'        MsgBox("Boo")
+'    End Sub
+'End Class
 
 Public Class ResetButton
     Inherits Button
@@ -87,23 +121,25 @@ Public Class Box
     Public Shared Tem As Boolean
 
     Public Sub Button1_Click(sender As Object, e As EventArgs) Handles Me.Click
-        'Base for allowing more user customisation
-        'Dim sp = "D:\School\Software Design and Development\Major Project\MrSmokedSalmon.github.io\WinFormsApp1\WinFormsApp1\Images and Stuff\X.png"
+        'I have got a base for allowing more user customisation (commented out)
+        Dim sp = "Images and Stuff"
 
         If (Me.Tag = "") Then
             Form1.midGame = True
             If Tem Then
                 Me.Tag = "O"
                 Me.Image = WinFormsApp1.My.Resources.O
+                'Me.Image = Image.FromFile(Form1.path & sp & "\O.png")
                 Tem = False
             Else Tem = True
                 Me.Tag = "X"
                 Me.Image = WinFormsApp1.My.Resources.X
-                If CheckWin() = True Then
-                    EndGame(Form1.Board)
-                    MsgBox("WIN sdhjabdjh")
-                    Form1.midGame = False
-                End If
+                'Me.Image = Image.FromFile(Form1.path & sp & "\X.png")
+            End If
+            If CheckWin() = True Then
+                EndGame(Form1.Board)
+                MsgBox("WIN")
+                Form1.midGame = False
             End If
         End If
     End Sub

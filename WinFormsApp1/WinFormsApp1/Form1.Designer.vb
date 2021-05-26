@@ -22,16 +22,54 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
+        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
+        Me.Options = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStrip1.SuspendLayout()
         Me.SuspendLayout()
+        '
+        'ToolStrip1
+        '
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Options})
+        Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
+        Me.ToolStrip1.Name = "ToolStrip1"
+        Me.ToolStrip1.Size = New System.Drawing.Size(800, 25)
+        Me.ToolStrip1.TabIndex = 0
+        Me.ToolStrip1.Text = "ToolStrip1"
+        '
+        'Options
+        '
+        Me.Options.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.Options.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1})
+        Me.Options.Image = CType(resources.GetObject("Options.Image"), System.Drawing.Image)
+        Me.Options.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.Options.Name = "Options"
+        Me.Options.Size = New System.Drawing.Size(62, 22)
+        Me.Options.Text = "Options"
+        '
+        'ToolStripMenuItem1
+        '
+        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(32, 19)
+        Me.ToolStripMenuItem1.Text = "ToolStripMenuItem1"
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.ToolStrip1)
         Me.Name = "Form1"
         Me.Text = "Naughts and Crosses"
+        Me.ToolStrip1.ResumeLayout(False)
+        Me.ToolStrip1.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
+
+    Friend WithEvents ToolStrip1 As ToolStrip
+    Friend WithEvents Options As ToolStripDropDownButton
+    Friend WithEvents ToolStripMenuItem1 As ToolStripMenuItem
 End Class
