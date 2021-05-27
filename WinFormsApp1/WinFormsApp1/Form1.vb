@@ -36,7 +36,8 @@ Public Class Form1
     Public path As String = (My.Application.Info.DirectoryPath).Replace("Builds\net5.0-windows", "")
 
     'Declaring Objects
-    Public Button As ResetButton = New ResetButton
+    Public Button = New ResetButton
+    Public Colours = New CustomDropDownItem
     '2D Jagged array that acts as the board
     Public Board()() As Box = {
         New Box(2) {New Box, New Box, New Box},
@@ -47,7 +48,10 @@ Public Class Form1
     'Monday 3/5/21
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         SetBoard()
-        'ToolStrip1.Items.Add(New CustomDropDownItem)
+        With Colours
+            .Text = "Colours"
+        End With
+        Options.DropDownItems.Add(Colours)
     End Sub
 
     Public Sub SetBoard()
@@ -90,14 +94,15 @@ Public Class Form1
         midGame = False
     End Sub
 End Class
-'
-'Public Class CustomDropDownItem
-'    Inherits ToolStripButton
 
-'    Public Sub LoadForm() Handles Me.Click
-'        MsgBox("Boo")
-'    End Sub
-'End Class
+Public Class CustomDropDownItem
+    Inherits ToolStripMenuItem
+
+    Public Sub LoadForm() Handles Me.Click
+        Form2.Size = New Size(275, 275)
+        Form2.Show()
+    End Sub
+End Class
 
 Public Class ResetButton
     Inherits Button
