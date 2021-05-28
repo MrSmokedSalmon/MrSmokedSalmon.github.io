@@ -1,1 +1,1 @@
-# SchoolTicTacToeProject HWYEG
+# SchoolTicTacToeProject
