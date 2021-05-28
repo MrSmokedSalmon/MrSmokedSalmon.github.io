@@ -35,6 +35,9 @@ Public Class Form1
 
     Public path As String = (My.Application.Info.DirectoryPath).Replace("Builds\net5.0-windows", "")
 
+    Public AccessX As Image = WinFormsApp1.My.Resources.X
+    Public AccessO As Image = WinFormsApp1.My.Resources.O
+
     'Declaring Objects
     Public Button = New ResetButton
     Public Colours = New CustomDropDownItem
@@ -99,7 +102,6 @@ Public Class CustomDropDownItem
     Inherits ToolStripMenuItem
 
     Public Sub LoadForm() Handles Me.Click
-        Form2.Size = New Size(275, 275)
         Form2.Show()
     End Sub
 End Class
@@ -108,9 +110,11 @@ Public Class ResetButton
     Inherits Button
 
     '22/05/21
-    Public Sub Button1_Click(sender As Object, e As EventArgs) Handles Me.Click
+    Public Sub Button1_Click(sender As Object,
+                             e As EventArgs) Handles Me.Click
         If (Form1.midGame = True) Then
-            If (MsgBox("Are you sure you want to start a new game?", 4, "Are you sure?") = 6) Then
+            If (MsgBox("Are you sure you want to start a new game?",
+                       4, "Are you sure?") = 6) Then
                 Form1.Reset()
             End If
         Else
@@ -125,7 +129,8 @@ Public Class Box
 
     Public Shared Tem As Boolean
 
-    Public Sub Button1_Click(sender As Object, e As EventArgs) Handles Me.Click
+    Public Sub Button1_Click(sender As Object,
+                             e As EventArgs) Handles Me.Click
         'I have got a base for allowing more user customisation (commented out)
         Dim sp = "Images and Stuff"
 
@@ -133,12 +138,12 @@ Public Class Box
             Form1.midGame = True
             If Tem Then
                 Me.Tag = "O"
-                Me.Image = WinFormsApp1.My.Resources.O
+                Me.Image = Form1.AccessO
                 'Me.Image = Image.FromFile(Form1.path & sp & "\O.png")
                 Tem = False
             Else Tem = True
                 Me.Tag = "X"
-                Me.Image = WinFormsApp1.My.Resources.X
+                Me.Image = Form1.AccessX
                 'Me.Image = Image.FromFile(Form1.path & sp & "\X.png")
             End If
             If CheckWin() = True Then
@@ -169,7 +174,7 @@ Public Class Box
                     While l <= 1
                         If (k.Tag = "X" Or k.Tag = "O") Then
                             'checks the winstates of the middle tile
-                            If (Form1.Board(0)(l + 1).Tag = k.Tag And Form1.Board(2)((l * -1) + 1).Tag = k.Tag) Then
+                            If Form1.Board(0)(l + 1).Tag = k.Tag And Form1.Board(2)((l * -1) + 1).Tag = k.Tag Then
                                 Return True
                                 Exit Function
                             End If
@@ -177,7 +182,7 @@ Public Class Box
                         l += 1
                     End While
                     If (k.Tag = "X" Or k.Tag = "O") Then
-                        If (Form1.Board(1)(0).Tag = k.Tag And Form1.Board(1)(2).Tag = k.Tag) Then
+                        If Form1.Board(1)(0).Tag = k.Tag And Form1.Board(1)(2).Tag = k.Tag Then
                             Return True
                             Exit Function
                         End If

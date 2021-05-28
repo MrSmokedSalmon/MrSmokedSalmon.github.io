@@ -25,7 +25,6 @@ Partial Class Form1
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
         Me.Options = New System.Windows.Forms.ToolStripDropDownButton()
-        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -41,18 +40,11 @@ Partial Class Form1
         'Options
         '
         Me.Options.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.Options.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1})
         Me.Options.Image = CType(resources.GetObject("Options.Image"), System.Drawing.Image)
         Me.Options.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.Options.Name = "Options"
         Me.Options.Size = New System.Drawing.Size(62, 22)
         Me.Options.Text = "Options"
-        '
-        'ToolStripMenuItem1
-        '
-        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(32, 19)
-        Me.ToolStripMenuItem1.Text = "ToolStripMenuItem1"
         '
         'Form1
         '
@@ -71,5 +63,4 @@ Partial Class Form1
 
     Friend WithEvents ToolStrip1 As ToolStrip
     Friend WithEvents Options As ToolStripDropDownButton
-    Friend WithEvents ToolStripMenuItem1 As ToolStripMenuItem
 End Class
