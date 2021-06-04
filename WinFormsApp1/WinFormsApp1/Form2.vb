@@ -1,6 +1,6 @@
 ﻿Public Class Form2
-    Public X = Image.FromFile(Form1.path & "Images and Stuff\X.png")
-    Public O = Image.FromFile(Form1.path & "Images and Stuff\O.png")
+    Public X = Image.FromFile(Form1.path & "\Images and Stuff\X.png")
+    Public O = Image.FromFile(Form1.path & "\Images and Stuff\O.png")
 
     Public CurImage As Image = X
 
@@ -131,16 +131,16 @@
         Dim HexCode = HexCodeBox.Text
         Dim HexNums = "0123456789ABCDEF"
 
-        Dim Red1 = HexCode.ElementAt(1)
-        Dim Red16 = HexCode.ElementAt(0)
+        Dim Red1 = Char.ToUpper(HexCode.ElementAt(1))
+        Dim Red16 = Char.ToUpper(HexCode.ElementAt(0))
         Dim SetRed As Integer
 
-        Dim Green1 = HexCode.ElementAt(3)
-        Dim Green16 = HexCode.ElementAt(2)
+        Dim Green1 = Char.ToUpper(HexCode.ElementAt(3))
+        Dim Green16 = Char.ToUpper(HexCode.ElementAt(2))
         Dim SetGreen As Integer
 
-        Dim Blue1 = HexCode.ElementAt(5)
-        Dim Blue16 = HexCode.ElementAt(4)
+        Dim Blue1 = Char.ToUpper(HexCode.ElementAt(5))
+        Dim Blue16 = Char.ToUpper(HexCode.ElementAt(4))
         Dim SetBlue As Integer
 
         SetRed = (HexNums.IndexOf(Red16) * 16) + HexNums.IndexOf(Red1)
@@ -159,12 +159,12 @@
         Else
             HexCode = Hex(Red.Value)
         End If
-        If Red.Value < 16 Then
+        If Green.Value < 16 Then
             HexCode = HexCode & "0" & Hex(Green.Value)
         Else
             HexCode = HexCode & Hex(Green.Value)
         End If
-        If Red.Value < 16 Then
+        If Blue.Value < 16 Then
             HexCode = HexCode & "0" & Hex(Blue.Value)
         Else
             HexCode = HexCode & Hex(Blue.Value)
