@@ -8,34 +8,54 @@
         ColourPreview.Image = CurImage
     End Sub
 
-    Private Sub Red_ValueChanged(sender As Object, e As EventArgs) Handles Red.ValueChanged
+    Private Overloads Sub Update()
         ColourPreview.Image = ApplyFilter(CurImage, 255, Red.Value,
                                           Green.Value, Blue.Value,
                                           Passes.Value)
+    End Sub
+
+    Private Sub Red_ValueChanged(sender As Object, e As EventArgs) Handles Red.ValueChanged
+        Update()
+        'TrackBar1.Value = Red.Value
     End Sub
 
     Private Sub AppToBack_CheckedChanged(sender As Object, e As EventArgs) Handles AppToBack.CheckedChanged
-        ColourPreview.Image = ApplyFilter(CurImage, 255, Red.Value,
-                                          Green.Value, Blue.Value,
-                                          Passes.Value)
+        Update()
     End Sub
 
     Private Sub Green_ValueChanged(sender As Object, e As EventArgs) Handles Green.ValueChanged
-        ColourPreview.Image = ApplyFilter(CurImage, 255, Red.Value,
-                                          Green.Value, Blue.Value,
-                                          Passes.Value)
+        Update()
+        'TrackBar2.Value = Green.Value
     End Sub
 
     Private Sub Blue_ValueChanged(sender As Object, e As EventArgs) Handles Blue.ValueChanged
-        ColourPreview.Image = ApplyFilter(CurImage, 255, Red.Value,
-                                          Green.Value, Blue.Value,
-                                          Passes.Value)
+        Update()
+        'TrackBar3.Value = Blue.Value
     End Sub
 
     Private Sub Passes_ValueChanged(sender As Object, e As EventArgs) Handles Passes.ValueChanged
-        ColourPreview.Image = ApplyFilter(CurImage, 255, Red.Value,
-                                          Green.Value, Blue.Value,
-                                          Passes.Value)
+        Update()
+        'TrackBar4.Value = Passes.Value
+    End Sub
+
+    Private Sub TrackBar1_Scroll(sender As Object, e As EventArgs) Handles TrackBar1.ValueChanged
+        Update()
+        Red.Value = TrackBar1.Value
+    End Sub
+
+    Private Sub TrackBar2_Scroll(sender As Object, e As EventArgs) Handles TrackBar2.ValueChanged
+        Update()
+        Green.Value = TrackBar2.Value
+    End Sub
+
+    Private Sub TrackBar3_Scroll(sender As Object, e As EventArgs) Handles TrackBar3.ValueChanged
+        Update()
+        Blue.Value = TrackBar3.Value
+    End Sub
+
+    Private Sub TrackBar4_Scroll(sender As Object, e As EventArgs) Handles TrackBar4.ValueChanged
+        Update()
+        Passes.Value = TrackBar4.Value
     End Sub
 
     Public Function ApplyFilter(Image As Bitmap, Alpha As Single,
@@ -153,7 +173,7 @@
     End Sub
 
     Private Sub HexRef_Click(sender As Object, e As EventArgs) Handles HexRef.Click
-        Dim HexCode = ""
+        Dim HexCode As String
         If Red.Value < 16 Then
             HexCode = "0" & Hex(Red.Value)
         Else

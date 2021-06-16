@@ -131,8 +131,7 @@ Public Class Box
 
     Public Sub Button1_Click(sender As Object,
                              e As EventArgs) Handles Me.Click
-        'I have got a base for allowing more user customisation (commented out)
-        Dim sp = "Images and Stuff"
+        'I have got a base for allowing more user customisation (commented out
 
         If (Me.Tag = "") Then
             Form1.midGame = True
