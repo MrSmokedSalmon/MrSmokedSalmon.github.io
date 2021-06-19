@@ -40,7 +40,7 @@ Public Class Form1
 
     'Declaring Objects
     Public Button = New ResetButton
-    Public Colours = New CustomDropDownItem
+
     '2D Jagged array that acts as the board
     Public Board()() As Box = {
         New Box(2) {New Box, New Box, New Box},
@@ -48,13 +48,30 @@ Public Class Form1
         New Box(2) {New Box, New Box, New Box}
     }
 
+    ' For Colours
+    Public X = Image.FromFile(path & "\Images and Stuff\X.png")
+    Public O = Image.FromFile(path & "\Images and Stuff\O.png")
+    Public CurImage As Image = X
+    Public Colours4Buttons() As Color = {
+        Color.White,
+        Color.Black,
+        Color.Red,
+        Color.Green,
+        Color.Blue,
+        Color.Yellow,
+        Color.Orange,
+        Color.Pink,
+        Color.Purple,
+        Color.Brown
+    }
+
+
+
     'Monday 3/5/21
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         SetBoard()
-        With Colours
-            .Text = "Colours"
-        End With
-        Options.DropDownItems.Add(Colours)
+        ColourPreview.Image = CurImage
+        Timer1.Start()
     End Sub
 
     Public Sub SetBoard()
@@ -74,7 +91,7 @@ Public Class Form1
             For Each k In i
                 With k
                     .Size = New Size(112, 112)
-                    .Location = New Point(107 + (118 * x), -80 + (118 * y))
+                    .Location = New Point(17 + (118 * x), -80 + (118 * y))
                     .Image = WinFormsApp1.My.Resources.Blank
                 End With
                 Controls.Add(k)
@@ -96,13 +113,244 @@ Public Class Form1
         Box.Tem = False
         midGame = False
     End Sub
-End Class
 
-Public Class CustomDropDownItem
-    Inherits ToolStripMenuItem
+    ' For Colours
+    Private Overloads Sub Update()
+        ColourPreview.Image = ApplyFilter(CurImage, 255, Red.Value,
+                                          Green.Value, Blue.Value,
+                                          Passes.Value)
+    End Sub
 
-    Public Sub LoadForm() Handles Me.Click
-        Form2.Show()
+    ' For Colours
+    Private Sub AppToBack_CheckedChanged(sender As Object, e As EventArgs) Handles AppToBack.CheckedChanged
+        Update()
+    End Sub
+
+    ' For Colours
+    ' This function is credited to 
+    Public Function ApplyFilter(Image As Bitmap, Alpha As Single,
+                                Red As Single, Green As Single,
+                                Blue As Single, Passes As Single)
+
+        Dim Background As Color = Color.FromArgb(0, 255, 255, 255)
+
+        Dim r1 As Single
+        Dim g1 As Single
+        Dim b1 As Single
+
+        Dim r2 As Single
+        Dim g2 As Single
+        Dim b2 As Single
+
+        Dim Colour = Color.FromArgb(255, Red, Green, Blue)
+
+        Dim Output = DirectCast(Image.Clone(), Bitmap)
+
+        Dim y = 1
+        While y < Image.Height
+            Dim x = 1
+            While x < Image.Width
+                'MsgBox(x)
+                If x >= Image.Width Then
+                    MsgBox(x)
+                End If
+                r1 = Image.GetPixel(x, y).R / 255
+                'MsgBox(Image.GetPixel(x, y).R / 255)
+                g1 = Image.GetPixel(x, y).G / 255
+                'MsgBox(Image.GetPixel(x, y).G / 255)
+                b1 = Image.GetPixel(x, y).B / 255
+                'MsgBox(Image.GetPixel(x, y).B / 255)
+
+                r2 = Red / 255
+                g2 = Green / 255
+                b2 = Blue / 255
+
+                Dim NRed As Integer = ((r1 * r2) * Passes) * 255
+                If NRed > 255 Then
+                    NRed = 255
+                End If
+                Dim NGreen As Integer = ((g1 * g2) * Passes) * 255
+                If NGreen > 255 Then
+                    NGreen = 255
+                End If
+                Dim NBlue As Integer = ((b1 * b2) * Passes) * 255
+                If NBlue > 255 Then
+                    NBlue = 255
+                End If
+
+                If AppToBack.Checked = True Then
+                    If Image.GetPixel(x, y) = Background Then
+                        Output.SetPixel(x, y, Color.FromArgb(155, NRed, NGreen, NBlue))
+                    Else
+                        Output.SetPixel(x, y, Color.FromArgb(255, NRed, NGreen, NBlue))
+                    End If
+                Else
+                        Output.SetPixel(x, y, Color.FromArgb(Image.GetPixel(x, y).A, NRed, NGreen, NBlue))
+                End If
+
+                x += 1
+            End While
+            y += 1
+        End While
+
+        Return Output
+    End Function
+
+    ' For Colours
+    Private Sub Save_Click(sender As Object, e As EventArgs) Handles Save.Click
+        If ImageSelect.SelectedItem = "X" Then
+            AccessX = ColourPreview.Image
+        ElseIf ImageSelect.SelectedItem = "O" Then
+            AccessO = ColourPreview.Image
+        End If
+    End Sub
+
+    ' For Colours
+    Private Sub ImageSelect_SelectedValueChanged(sender As Object, e As EventArgs) Handles ImageSelect.TextChanged
+        If ImageSelect.SelectedItem = "X" Then
+            ColourPreview.Image = X
+            CurImage = X
+        ElseIf ImageSelect.SelectedItem = "O" Then
+            ColourPreview.Image = O
+            CurImage = O
+        End If
+    End Sub
+
+    ' For Colours
+    Private Sub HexApp_Click(sender As Object, e As EventArgs) Handles HexApp.Click
+        Dim HexCode = HexCodeBox.Text
+        Dim HexNums = "0123456789ABCDEF"
+
+        Dim Red1 = Char.ToUpper(HexCode.ElementAt(1))
+        Dim Red16 = Char.ToUpper(HexCode.ElementAt(0))
+        Dim SetRed As Integer
+
+        Dim Green1 = Char.ToUpper(HexCode.ElementAt(3))
+        Dim Green16 = Char.ToUpper(HexCode.ElementAt(2))
+        Dim SetGreen As Integer
+
+        Dim Blue1 = Char.ToUpper(HexCode.ElementAt(5))
+        Dim Blue16 = Char.ToUpper(HexCode.ElementAt(4))
+        Dim SetBlue As Integer
+
+        SetRed = (HexNums.IndexOf(Red16) * 16) + HexNums.IndexOf(Red1)
+        SetGreen = (HexNums.IndexOf(Green16) * 16) + HexNums.IndexOf(Green1)
+        SetBlue = (HexNums.IndexOf(Blue16) * 16) + HexNums.IndexOf(Blue1)
+
+        Red.Value = SetRed
+        Green.Value = SetGreen
+        Blue.Value = SetBlue
+    End Sub
+
+    ' For Colours
+    Private Sub HexRef_Click(sender As Object, e As EventArgs) Handles HexRef.Click
+        Dim HexCode As String
+        If Red.Value < 16 Then
+            HexCode = "0" & Hex(Red.Value)
+        Else
+            HexCode = Hex(Red.Value)
+        End If
+        If Green.Value < 16 Then
+            HexCode = HexCode & "0" & Hex(Green.Value)
+        Else
+            HexCode = HexCode & Hex(Green.Value)
+        End If
+        If Blue.Value < 16 Then
+            HexCode = HexCode & "0" & Hex(Blue.Value)
+        Else
+            HexCode = HexCode & Hex(Blue.Value)
+        End If
+        HexCodeBox.Text = HexCode
+    End Sub
+
+    ' For Colours
+    Private Sub Reeset_Click(sender As Object, e As EventArgs) Handles Reeset.Click
+        Red.Value = 1
+        Green.Value = 1
+        Blue.Value = 1
+        Passes.Value = 1
+
+        ColourPreview.Image = X
+    End Sub
+
+    ' For Colours
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        Update()
+
+        Red.Value = TrackBar1.Value
+        Green.Value = TrackBar2.Value
+        Blue.Value = TrackBar3.Value
+        Passes.Value = TrackBar4.Value
+    End Sub
+
+    Private Sub White_Click(sender As Object, e As EventArgs) Handles White.Click
+        TrackBar1.Value = 255
+        TrackBar2.Value = 255
+        TrackBar3.Value = 255
+        TrackBar4.Value = 1
+    End Sub
+
+    Private Sub Black_Click(sender As Object, e As EventArgs) Handles Black.Click
+        TrackBar1.Value = 95
+        TrackBar2.Value = 95
+        TrackBar3.Value = 95
+        TrackBar4.Value = 1
+    End Sub
+
+    Private Sub Red1_Click(sender As Object, e As EventArgs) Handles Red1.Click
+        TrackBar1.Value = 255
+        TrackBar2.Value = 30
+        TrackBar3.Value = 45
+        TrackBar4.Value = 1
+    End Sub
+
+    Private Sub Green1_Click(sender As Object, e As EventArgs) Handles Green1.Click
+        TrackBar1.Value = 35
+        TrackBar2.Value = 255
+        TrackBar3.Value = 65
+        TrackBar4.Value = 1
+    End Sub
+
+    Private Sub Blue1_Click(sender As Object, e As EventArgs) Handles Blue1.Click
+        TrackBar1.Value = 20
+        TrackBar2.Value = 130
+        TrackBar3.Value = 255
+        TrackBar4.Value = 1
+    End Sub
+
+    Private Sub Yellow_Click(sender As Object, e As EventArgs) Handles Yellow.Click
+        TrackBar1.Value = 255
+        TrackBar2.Value = 245
+        TrackBar3.Value = 20
+        TrackBar4.Value = 1
+    End Sub
+
+    Private Sub Orange_Click(sender As Object, e As EventArgs) Handles Orange.Click
+        TrackBar1.Value = 255
+        TrackBar2.Value = 95
+        TrackBar3.Value = 1
+        TrackBar4.Value = 2
+    End Sub
+
+    Private Sub Pink_Click(sender As Object, e As EventArgs) Handles Pink.Click
+        TrackBar1.Value = 195
+        TrackBar2.Value = 60
+        TrackBar3.Value = 160
+        TrackBar4.Value = 2
+    End Sub
+
+    Private Sub Purple_Click(sender As Object, e As EventArgs) Handles Purple.Click
+        TrackBar1.Value = 195
+        TrackBar2.Value = 60
+        TrackBar3.Value = 160
+        TrackBar4.Value = 1
+    End Sub
+
+    Private Sub Brown_Click(sender As Object, e As EventArgs) Handles Brown.Click
+        TrackBar1.Value = 255
+        TrackBar2.Value = 175
+        TrackBar3.Value = 110
+        TrackBar4.Value = 1
     End Sub
 End Class
 
@@ -148,6 +396,18 @@ Public Class Box
             If CheckWin() = True Then
                 EndGame(Form1.Board)
                 MsgBox("WIN")
+                Form1.midGame = False
+            End If
+            Dim x As Integer
+            For Each i In Form1.Board
+                For Each k In i
+                    If k.Tag = "X" Or k.Tag = "O" Then
+                        x += 1
+                    End If
+                Next
+            Next
+            If x = 9 Then
+                MsgBox("TIE")
                 Form1.midGame = False
             End If
         End If
