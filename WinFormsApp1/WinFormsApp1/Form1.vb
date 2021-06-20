@@ -52,20 +52,6 @@ Public Class Form1
     Public X = Image.FromFile(path & "\Images and Stuff\X.png")
     Public O = Image.FromFile(path & "\Images and Stuff\O.png")
     Public CurImage As Image = X
-    Public Colours4Buttons() As Color = {
-        Color.White,
-        Color.Black,
-        Color.Red,
-        Color.Green,
-        Color.Blue,
-        Color.Yellow,
-        Color.Orange,
-        Color.Pink,
-        Color.Purple,
-        Color.Brown
-    }
-
-
 
     'Monday 3/5/21
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -127,7 +113,7 @@ Public Class Form1
     End Sub
 
     ' For Colours
-    ' This function is credited to 
+    ' This function is credited mostly to Synaps3 on Stackoverflow. This is a modified version of his image generation function
     Public Function ApplyFilter(Image As Bitmap, Alpha As Single,
                                 Red As Single, Green As Single,
                                 Blue As Single, Passes As Single)
@@ -185,9 +171,8 @@ Public Class Form1
                         Output.SetPixel(x, y, Color.FromArgb(255, NRed, NGreen, NBlue))
                     End If
                 Else
-                        Output.SetPixel(x, y, Color.FromArgb(Image.GetPixel(x, y).A, NRed, NGreen, NBlue))
+                    Output.SetPixel(x, y, Color.FromArgb(Image.GetPixel(x, y).A, NRed, NGreen, NBlue))
                 End If
-
                 x += 1
             End While
             y += 1
@@ -377,9 +362,7 @@ Public Class Box
 
     Public Shared Tem As Boolean
 
-    Public Sub Button1_Click(sender As Object,
-                             e As EventArgs) Handles Me.Click
-        'I have got a base for allowing more user customisation (commented out
+    Public Sub Button1_Click(sender As Object, e As EventArgs) Handles Me.Click
 
         If (Me.Tag = "") Then
             Form1.midGame = True
