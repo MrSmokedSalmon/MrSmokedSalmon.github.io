@@ -113,7 +113,6 @@ Public Class Form1
     End Sub
 
     ' For Colours
-    ' This function is credited mostly to Synaps3 on Stackoverflow. This is a modified version of his image generation function
     Public Function ApplyFilter(Image As Bitmap, Alpha As Single,
                                 Red As Single, Green As Single,
                                 Blue As Single, Passes As Single)
